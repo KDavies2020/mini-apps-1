@@ -1,63 +1,16 @@
+// ********* GENERAL SETUP AND STRUCTURE FOR OUR PAGE & HOW IT WILL LOOK /RUN *************
+
 // Counter to keep track of total turns.
 var counter = 0;
 
 // Create a Board to Help us check for Conflicts.
-var board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+var board = [
+  [0, 0, 0],
+  [0, 0, 0],
+  [0, 0, 0]
+];
 
-var resetBoard = function () {
-  var filledSquare = document.getElementsByClassName("0");
-  for( var i = 0; i < filledSquare.length; i++) {
-    filledSquare[i].innerHTML = '';
-  }
-  var filledSquare = document.getElementsByClassName("1");
-  for( var i = 0; i < filledSquare.length; i++) {
-    filledSquare[i].innerHTML = '';
-  }
-  var filledSquare = document.getElementsByClassName("2");
-  for( var i = 0; i < filledSquare.length; i++) {
-    filledSquare[i].innerHTML = '';
-  }
-  counter = 0;
-  board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-
-}
-
-//If our board is full, game is a draw
-var countCheck = function() {
-  if (counter === 9) {
-    alert('Tie Game!')
-    resetBoard()
-  }
-};
-
-//SETTING OUR ONCLICK FOR EACH SQUARE
-var squares = document.getElementsByClassName("board")
-
-for (var i = 0; i < squares.length; i++) {
-
-  squares[i].onclick = function(event) {
-    squareClicked();
-    countCheck();
-  }
-};
-
-
-//THE FUNCTION THAT IS ACTUALLY EXECUTED UPON A CLICK.
-
-var squareClicked = function(square) {
-
-  if (event.target.innerHTML === "") {
-    event.target.innerHTML = xORO();
-    updateBoard()
-    findAWinner()
-
-  }
-};
-
-
-
-
-
+// Function to tell whether it is X or O turn
 var xORO = function() {
   if (counter % 2 === 0) {
     counter++
@@ -68,6 +21,59 @@ var xORO = function() {
   }
 };
 
+// In case of a Tie or Win, this function will run to reset our board.
+var resetBoard = function() {
+  var filledSquare = document.getElementsByClassName("0");
+  for (var i = 0; i < filledSquare.length; i++) {
+    filledSquare[i].innerHTML = '';
+  }
+  var filledSquare = document.getElementsByClassName("1");
+  for (var i = 0; i < filledSquare.length; i++) {
+    filledSquare[i].innerHTML = '';
+  }
+  var filledSquare = document.getElementsByClassName("2");
+  for (var i = 0; i < filledSquare.length; i++) {
+    filledSquare[i].innerHTML = '';
+  }
+  counter = 0;
+  board = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0]
+  ];
+
+}
+
+
+//********* WHAT IS ACTUALLY HAPPENING WHEN A SQUARE  IS CLICKED **********************
+
+//Here we are setting an specific function to run upon click of each of our squares
+var squares = document.getElementsByClassName("board")
+
+for (var i = 0; i < squares.length; i++) {
+
+  squares[i].onclick = function(event) {
+    squareClicked();
+  }
+};
+
+
+
+// This is the actual function that will be running upon click
+var squareClicked = function(square) {
+
+  if (event.target.innerHTML === "") {
+    event.target.innerHTML = xORO();
+
+    updateBoard()
+
+    findAWinner()
+
+  }
+};
+
+
+
 //UPDATE OUR BOARD TO REFLECT BOARD ON HTML PAGE
 
 var updateBoard = function() {
@@ -77,7 +83,7 @@ var updateBoard = function() {
 }
 
 
-//FUNCTION THAT CONTAINS OUR VERTICAL / HORIZONTAL / AND DIAG WINNING COMBOS
+// ************* OUR FUNCTIONS THAT CHECK FOR A WINNER - TO BE INCLUDED IN OUR CLICKS  ***********
 
 var findAWinner = function() {
   var row = event.target.className;
@@ -86,16 +92,24 @@ var findAWinner = function() {
   var verticalCounter = '';
   var diagonalCounter = '';
 
-// INNER FUNCTION THAT CHECKS FOR A VERTICAL WIN
+  // INNER FUNCTION THAT CHECKS FOR A VERTICAL WIN
 
   var verticalWinCheck = function() {
 
-    for (var i = 0; i <board.length; i++) {
+    for (var i = 0; i < board.length; i++) {
       verticalCounter += board[i][column];
 
-      if(verticalCounter === 'XXX'|| verticalCounter === 'OOO') {
-        alert("We Have A Winner!")
-       }
+      if (verticalCounter === 'XXX' || verticalCounter === 'OOO') {
+
+        setTimeout(function() {
+          alert("We Have A Winner!");
+        }, 250)
+
+        setTimeout(function() {
+          resetBoard();
+        }, 500)
+
+      }
     }
 
   }
@@ -106,9 +120,14 @@ var findAWinner = function() {
     for (var i = 0; i < board[row].length; i++) {
       horizontalCounter += board[row][i];
 
-       if(horizontalCounter === 'XXX'|| horizontalCounter === 'OOO') {
-        alert("We Have A Winner!")
-       }
+      if (horizontalCounter === 'XXX' || horizontalCounter === 'OOO') {
+        setTimeout(function() {
+          alert("We Have A Winner!");
+        }, 250)
+        setTimeout(function() {
+          resetBoard();
+        }, 500)
+      }
 
     }
   }
@@ -116,12 +135,29 @@ var findAWinner = function() {
   // DIAGONAL CHECKER - ONLY NEEDED TO RUN IF CORNERS ARE BEING USED UP
 
   var diagonalCheck = function() {
-    if( board[0][0] + board[1][1] + board[2][2] === 'XXX' || board[0][0] + board[1][1] + board[2][2] === 'OOO') {
-      alert("We Have A Winner")
+    if (board[0][0] + board[1][1] + board[2][2] === 'XXX' || board[0][0] + board[1][1] + board[2][2] === 'OOO') {
+      setTimeout(function() {
+        alert("We Have A Winner!");
+      }, 250)
+      setTimeout(function() {
+        resetBoard();
+      }, 500)
     }
-    if( board[0][2] + board[1][1] + board[2][0] === 'XXX' || board[0][2] + board[1][1] + board[2][0] === 'OOO') {
-      alert("We Have A Winner")
+    if (board[0][2] + board[1][1] + board[2][0] === 'XXX' || board[0][2] + board[1][1] + board[2][0] === 'OOO') {
+      setTimeout(function() {
+        alert("We Have A Winner!");
+      }, 250)
+      setTimeout(function() {
+        resetBoard();
+      }, 500)
 
+    } else if (counter === 9) {
+      setTimeout(function() {
+        alert('We Have A Tie');
+      }, 250)
+      setTimeout(function() {
+        resetBoard();
+      }, 251)
     }
   }
   horizontalWinCheck()
