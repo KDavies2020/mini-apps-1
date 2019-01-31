@@ -4,10 +4,29 @@ var counter = 0;
 // Create a Board to Help us check for Conflicts.
 var board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 
+var resetBoard = function () {
+  var filledSquare = document.getElementsByClassName("0");
+  for( var i = 0; i < filledSquare.length; i++) {
+    filledSquare[i].innerHTML = '';
+  }
+  var filledSquare = document.getElementsByClassName("1");
+  for( var i = 0; i < filledSquare.length; i++) {
+    filledSquare[i].innerHTML = '';
+  }
+  var filledSquare = document.getElementsByClassName("2");
+  for( var i = 0; i < filledSquare.length; i++) {
+    filledSquare[i].innerHTML = '';
+  }
+  counter = 0;
+  board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+
+}
+
 //If our board is full, game is a draw
 var countCheck = function() {
   if (counter === 9) {
     alert('Tie Game!')
+    resetBoard()
   }
 };
 
@@ -27,9 +46,6 @@ for (var i = 0; i < squares.length; i++) {
 
 var squareClicked = function(square) {
 
-  //creating the above array so we can loop and compare / check for winning combo
-  // var check = document.querySelector('.board').children;
-  // console.log(check);
   if (event.target.innerHTML === "") {
     event.target.innerHTML = xORO();
     updateBoard()
@@ -39,7 +55,7 @@ var squareClicked = function(square) {
 };
 
 
-//FUNCTION TO CHECK WHETHER IT IS X OR O TURN
+
 
 
 var xORO = function() {
@@ -105,6 +121,7 @@ var findAWinner = function() {
     }
     if( board[0][2] + board[1][1] + board[2][0] === 'XXX' || board[0][2] + board[1][1] + board[2][0] === 'OOO') {
       alert("We Have A Winner")
+
     }
   }
   horizontalWinCheck()
